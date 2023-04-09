@@ -14,7 +14,7 @@ class AIDataset:
     def load(self, os_loc=None, y_label=None):
 
         """
-        Loads a data set for use in the machine learning program.
+        Loads a data set for use in the machine learning program to test.
 
         :param os_loc: [Optional] String representing the file to be loaded. If None, the function
         will request user provide a location via the command prompt. Default = None.
