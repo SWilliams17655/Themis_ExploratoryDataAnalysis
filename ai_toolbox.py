@@ -11,7 +11,6 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.model_selection import cross_val_predict
 from sklearn.model_selection import cross_val_score
-#from keras_visualizer import visualizer
 
 
 # *************************************************************************
