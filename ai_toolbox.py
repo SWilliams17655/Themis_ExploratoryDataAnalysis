@@ -11,18 +11,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.model_selection import cross_val_predict
 from sklearn.model_selection import cross_val_score
-from keras_visualizer import visualizer
-
-
-# from sklearn.metrics import precision_score, recall_score
-# from sklearn.preprocessing import PolynomialFeatures
-# from sklearn.ensemble import VotingClassifier
-# from sklearn.neighbors import KNeighborsClassifier
-# from sklearn.linear_model import LogisticRegression
-# from sklearn.svm import LinearSVC
-# from sklearn.metrics import log_loss
-# from sklearn.metrics import accuracy_score
-# from sklearn.metrics import mean_absolute_error
+#from keras_visualizer import visualizer
 
 
 # *************************************************************************
@@ -75,6 +64,7 @@ def load_model(location):
     """
     return pickle.load(open(location, 'rb'))
 
+
 def display_neural_network(model):
     """
     Generates a image of the neural network using keras-visualizer.
@@ -82,6 +72,7 @@ def display_neural_network(model):
     :param model: the neural network to be displayed.
     """
     visualizer(model, format='png', view=True)
+
 
 def compare_roc(models, models_label, x_train, y_train):
     """
@@ -143,15 +134,16 @@ def train_neural_network(x_train, y_train, x_eval_set, y_eval_set):
                               kernel_initializer=initializer),
         tf.keras.layers.Dense(num_hidden_layer_3, activation=tf.nn.relu,
                               kernel_initializer=initializer),
-        tf.keras.layers.Dense(num_output_layer, activation=tf.nn.sigmoid, #softmax and sparse cis best for non-binary, but use sigmoid and
+        tf.keras.layers.Dense(num_output_layer, activation=tf.nn.sigmoid,
+                              # softmax and sparse cis best for non-binary, but use sigmoid and
                               kernel_initializer=initializer)
     ])
-    #Softmax and loss=tf.keras.losses.SparseCategoricalCrossentropy() if it is a multi-classification or sigmoid and
-    #loss=tf.keras.losses.BinaryCrossentropy() if it is binary with a single state.
+    # Softmax and loss=tf.keras.losses.SparseCategoricalCrossentropy() if it is a multi-classification or sigmoid and
+    # loss=tf.keras.losses.BinaryCrossentropy() if it is binary with a single state.
 
     # compiles the model using accuracy as the metric and adam as the optimizer
     model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
-                  loss=tf.keras.losses.BinaryCrossentropy(), #loss=tf.keras.losses.SparseCategoricalCrossentropy()
+                  loss=tf.keras.losses.BinaryCrossentropy(),  # loss=tf.keras.losses.SparseCategoricalCrossentropy()
                   metrics=['accuracy'])
 
     csv_logger = tf.keras.callbacks.CSVLogger("NN_log.csv")
@@ -315,5 +307,3 @@ def make_one_prediction(model, input_data_series):
     input = np.reshape(input, (1, len(input_data_series)))
     ans = model.predict(input)
     return ans[0]
-
-

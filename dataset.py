@@ -5,8 +5,8 @@ import numpy as np
 
 
 class AIDataset:
-    def __init__(self, file_location=""):
-        self.file_location = file_location
+    def __init__(self):
+        self.file_location = ""
         self.data_file = pd.DataFrame()
         self.x = pd.DataFrame()
         self.y = pd.DataFrame()
