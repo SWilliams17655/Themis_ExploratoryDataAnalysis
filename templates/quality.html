@@ -18,51 +18,56 @@
     {% include "header.html" %}
 
     <!-- Jumbotron -->
-    <div class="bg-image text-center shadow-1-strong text-white d-flex flex-column p-3" style="background-image: url('/static/images/computerBanner.jpg'); height: 200px;">
-        <h1>Themis</h1>
-        <h5><br></h5>
-        <h3> Step 1: Analyze Quality </h3>
+    <div class="bg-image text-center justify-content-center shadow-1-strong text-white d-flex flex-column" style="background-image: url('/static/images/computerBanner.jpg'); height: 200px;">
+        <h3> Step 1: Data Quality & Preparation </h3>
         <h4> Assess and improve the quality of your data based on how you want to use it.</h4>
     </div>
 
-    <div class="container p-1 justify-content-center bg-dark col-sm-12 col-md-12 col-lg-12">
-        <h3>Description of Data Distribution.</h3>
+    <div class="container pt-5 justify-content-center bg-dark col-sm-6 col-md-12 col-lg-12">
+        <h3>Description of Data Distribution</h3>
     </div>
-    <div class="container p-2 bg-dark justify-content-center col-sm-12 col-md-12 col-lg-12">
-        <table class="table text-white">
-            <thead>
-                <tr>
-                    <th scope="col">Attribute</th>
-                    <th scope="col">Count</th>
-                    <th scope="col">Mean</th>
-                    <th scope="col">Standard Deviation</th>
-                    <th scope="col">Minimum</th>
-                    <th scope="col">25%</th>
-                    <th scope="col">50%</th>
-                    <th scope="col">75%</th>
-                    <th scope="col">Maximum</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for attribute in dataset.x.columns: %}
+    <div class="container pt-2 bg-dark justify-content-center col-sm-6 col-md-12 col-lg-12">
+        <div class = "table-responsive">
+            <table class="table text-white">
+                <thead>
                     <tr>
-                      <th scope="row">{{attribute}}</th>
-                      <th scope="row">{{dataset.x.describe()[attribute][0] | round(2)}}</th>
-                      <th scope="row">{{dataset.x.describe()[attribute][1] | round(2)}}</th>
-                      <th scope="row">{{dataset.x.describe()[attribute][2] | round(2)}}</th>
-                      <th scope="row">{{dataset.x.describe()[attribute][3] | round(2)}}</th>
-                      <th scope="row">{{dataset.x.describe()[attribute][4] | round(2)}}</th>
-                      <th scope="row">{{dataset.x.describe()[attribute][5] | round(2)}}</th>
-                      <th scope="row">{{dataset.x.describe()[attribute][6] | round(2)}}</th>
-                      <th scope="row">{{dataset.x.describe()[attribute][7] | round(2)}}</th>
+                        <th scope="col">Attribute</th>
+                        <th scope="col">Count</th>
+                        <th scope="col">Mean</th>
+                        <th scope="col">Standard Deviation</th>
+                        <th scope="col">Minimum</th>
+                        <th scope="col">25%</th>
+                        <th scope="col">50%</th>
+                        <th scope="col">75%</th>
+                        <th scope="col">Maximum</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for attribute in dataset.x.columns: %}
+                        <tr>
+                          <th scope="row">{{attribute}}</th>
+                          <th scope="row">{{dataset.x.describe()[attribute][0] | round(2)}}</th>
+                          <th scope="row">{{dataset.x.describe()[attribute][1] | round(2)}}</th>
+                          <th scope="row">{{dataset.x.describe()[attribute][2] | round(2)}}</th>
+                          <th scope="row">{{dataset.x.describe()[attribute][3] | round(2)}}</th>
+                          <th scope="row">{{dataset.x.describe()[attribute][4] | round(2)}}</th>
+                          <th scope="row">{{dataset.x.describe()[attribute][5] | round(2)}}</th>
+                          <th scope="row">{{dataset.x.describe()[attribute][6] | round(2)}}</th>
+                          <th scope="row">{{dataset.x.describe()[attribute][7] | round(2)}}</th>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="album py-5 bg-dark">
+
+    <div class="container pt-5 justify-content-center bg-dark col-sm-12 col-md-12 col-lg-12">
+        <h3>Historgrams of Attributes</h3>
+    </div>
+
+    <div class="album pt-2 bg-dark">
             <div class="container">
-                <div class="row justify-content-evenly gap-4">
+                <div class="row justify-content-evenly gap-2">
                     {% for image in data: %}
                         <div class="col d-inline-flex flex-column justify-content-between col-sm-12 col-md-12 col-lg-12" style="padding: 2%">
                             <img src='data:image/png;base64,{{image}}'>
