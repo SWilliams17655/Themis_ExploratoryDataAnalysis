@@ -46,16 +46,15 @@ class AIDataset:
             fig, (ax1) = plt.subplots(1, 1, figsize=(20, 9))
             true_array = self.x.where((self.y == 1))
             false_array = self.x.where((self.y == 0))
-
-            ax1.hist([true_array[attribute], false_array[attribute]], bins=10, density=False,
-                     stacked=False, histtype='bar', rwidth=0.7, color=["royalblue", "tomato"],
+            x, bin_label, patch = ax1.hist([true_array[attribute], false_array[attribute]], bins=15, density=False,
+                     stacked=False, histtype='step', rwidth=0.7, align='mid', color=["royalblue", "tomato"],
                      label=["True", "False"])
 
-            ax1.set_ylabel("Density of Dataset", fontsize=12)
+            ax1.set_xticks(bin_label)
             ax1.set_title(attribute, fontsize=20)
-            ax1.legend(fontsize=15)
             ax1.patch.set_alpha(0.0)
             fig.patch.set_alpha(0.0)
+            ax1.legend(fancybox=True, framealpha=0.1)
             fig_array.append(fig)
 
         return fig_array
@@ -71,12 +70,11 @@ class AIDataset:
         print(corr_matrix["Classifier"].sort_values(ascending=False))
         print("\n")
 
-        fig, (ax1) = plt.subplots(1, 1, figsize=(20, 9))
-        color_axes = ax1.matshow(corr_matrix, cmap='Greens')
+        fig, (ax1) = plt.subplots(1, 1, figsize=(15, 9))
+        color_axes = ax1.matshow(corr_matrix, cmap='Reds')
         fig.colorbar(color_axes)
-        ax1.set_xticks(np.arange(len(corr_matrix)), corr_matrix.columns, rotation=90)
-        ax1.set_yticks(np.arange(len(corr_matrix)), corr_matrix.columns)
-        ax1.set_title("Correlation Matrix")
+        ax1.set_xticks(np.arange(len(corr_matrix)), corr_matrix.columns, fontsize=12, rotation=90)
+        ax1.set_yticks(np.arange(len(corr_matrix)), corr_matrix.columns, fontsize=12)
         ax1.patch.set_alpha(0.0)
         fig.patch.set_alpha(0.0)
         return fig, corr_matrix
@@ -92,19 +90,19 @@ class AIDataset:
             if attribute1 != attribute2:
                 style.use('dark_background')
 
-                fig, (ax1) = plt.subplots(1, 1, figsize=(10, 9))
+                fig, (ax1) = plt.subplots(1, 1, figsize=(20, 9))
                 true_array = self.x.where((self.y == 1))
                 false_array = self.x.where((self.y == 0))
 
                 ax1.scatter(true_array[attribute1], self.x[attribute2], color="royalblue", label="Classifier: True")
                 ax1.scatter(false_array[attribute1], self.x[attribute2], color="tomato", label="Classifier: False")
-                ax1.set_title("Compare " + attribute1 + " & " + attribute2)
-                ax1.legend()
-                ax1.set_xlabel(attribute1)
-                ax1.set_ylabel(attribute2)
+                ax1.set_title(attribute1 + " & " + attribute2, fontsize=20)
+                ax1.set_xlabel(attribute1, fontsize=12)
+                ax1.set_ylabel(attribute2, fontsize=12)
                 ax1.patch.set_alpha(0.0)
                 fig.patch.set_alpha(0.0)
-                ax1.legend(fancybox=True, framealpha=0.2)
+                ax1.legend(fontsize=15)
+                ax1.legend(fancybox=True, framealpha=0.0)
                 fig_array.append(fig)
         return fig_array
 

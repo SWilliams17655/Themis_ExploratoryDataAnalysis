@@ -16,6 +16,15 @@
 
 <body class="text-white bg-dark text-center gap-2">
     {% include "header.html" %}
+
+    <!-- Jumbotron -->
+    <div class="bg-image text-center justify-content-center shadow-1-strong text-white d-flex flex-column p-3" style="background-image: url('/static/images/computerBanner.jpg'); height: 200px;">
+        <h3> Step 2: Data Correlation </h3>
+        <h4> Analyze and identify correlation and causation between attributes within the data.</h4>
+    </div>
+    <div class="container pt-5 justify-content-center bg-dark col-sm-12 col-md-12 col-lg-12">
+        <h3>Dataset's Correlation Matrix</h3>
+    </div>
     <div class="container">
         <div class="row justify-content-evenly gap-4">
             {% for image in data[0:1]: %}
@@ -24,6 +33,9 @@
                 </div>
             {%endfor%}
         </div>
+    </div>
+    <div class="container pt-5 justify-content-center bg-dark col-sm-12 col-md-12 col-lg-12">
+        <h3>Dataset's Correlation Table</h3>
     </div>
     <div class="container p-2 bg-dark col-sm-12 col-md-12 col-lg-12">
         <table class="table text-white">
@@ -42,6 +54,10 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <div class="container pt-5 justify-content-center bg-dark col-sm-12 col-md-12 col-lg-12">
+        <h3>Select an Attribute to Plot Relationships</h3>
     </div>
     <div class="container bg-dark p-2 col-sm-12 col-md-12 col-lg-12">
         <form action="{{url_for('get_correlation')}}" method="POST">
