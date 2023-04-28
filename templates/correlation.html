@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Themis: Data Exploration Library</title>
+    <link rel="stylesheet" href="static/style.css">
+
+    <!--Boot Strap Link-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/0ce7d75bec.js" crossorigin="anonymous"></script>
+
+    <!--Font Awesome Link-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</head>
+
+<body class="text-white bg-dark text-center gap-2">
+    {% include "header.html" %}
+    <div class="container">
+        <div class="row justify-content-evenly gap-4">
+            {% for image in data[0:1]: %}
+                <div class="col border border-dark-subtle d-inline-flex flex-column justify-content-between col-sm-12 col-md-12 col-lg-12" style="padding: 2%">
+                    <img src='data:image/png;base64,{{image}}'>
+                </div>
+            {%endfor%}
+        </div>
+    </div>
+    <div class="container p-2 bg-dark col-sm-12 col-md-12 col-lg-12">
+        <table class="table text-white">
+            <thead>
+                <tr>
+                    <th scope="col">Attribute</th>
+                    <th scope="col">Correlation</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for attribute in corr_matrix.columns: %}
+                    <tr>
+                      <th scope="row">{{attribute}}</th>
+                      <th scope="row">{{corr_matrix[attribute]["Classifier"] | round(2)}}</th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="container bg-dark p-2 col-sm-12 col-md-12 col-lg-12">
+        <form action="{{url_for('get_correlation')}}" method="POST">
+            <div class="container justify-content-center mb-3">
+                <label class="visually-hidden" for="specificSizeSelect">Preference</label>
+                <select class="form-select" id="specificSizeSelect" name="selector">
+                    <option selected>Choose attribute...</option>
+                    {% for attribute in dataset.x.columns: %}
+                        <option attribute="0">{{attribute}}</option>
+                    {% endfor %}}
+                </select>
+            </div>
+            <div class="container justify-content-center mb-3">
+                <button type="submit" class="btn btn-primary mb-3">Search</button>
+            </div>
+        </form>
+    </div>
+    {% if selection: %}
+        <div class="album py-5 bg-dark">
+            <div class="container">
+                <div class="row justify-content-evenly gap-4">
+                    {% for image in data[1:]: %}
+                        <div class="col d-inline-flex flex-column justify-content-between col-sm-12 col-md-12 col-lg-12" style="padding: 2%">
+                            <img src='data:image/png;base64,{{image}}'>
+                        </div>
+                    {%endfor%}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</body>
+</html>

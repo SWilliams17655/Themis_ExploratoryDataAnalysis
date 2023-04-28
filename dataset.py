@@ -1,9 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.style as style
-
 import numpy as np
-
 
 
 class AIDataset:
@@ -41,7 +39,9 @@ class AIDataset:
         Plots multiple scatter plots showing relationship between attributes in
         attributes array. If mask is a value other than none, graph only shows correlating data for that value of Y.
         """
-        style.use('ggplot')
+        style.use('dark_background')
+        fig_array = []
+
         for attribute in self.x.columns:
             fig, (ax1) = plt.subplots(1, 1, figsize=(20, 9))
             true_array = self.x.where((self.y == 1))
@@ -51,17 +51,20 @@ class AIDataset:
                      stacked=False, histtype='bar', rwidth=0.7, color=["royalblue", "tomato"],
                      label=["True", "False"])
 
-            ax1.set_ylabel("Density of Dataset")
-            ax1.set_title(attribute)
-            ax1.legend()
+            ax1.set_ylabel("Density of Dataset", fontsize=12)
+            ax1.set_title(attribute, fontsize=20)
+            ax1.legend(fontsize=15)
+            ax1.patch.set_alpha(0.0)
+            fig.patch.set_alpha(0.0)
+            fig_array.append(fig)
 
-            plt.show()
+        return fig_array
 
     def show_correlation_matrix(self):
         """
         Plots a correlation matrix
         """
-
+        style.use('dark_background')
         new_val = self.x.copy()
         new_val["Classifier"] = self.y
         corr_matrix = new_val.corr()
@@ -74,32 +77,36 @@ class AIDataset:
         ax1.set_xticks(np.arange(len(corr_matrix)), corr_matrix.columns, rotation=90)
         ax1.set_yticks(np.arange(len(corr_matrix)), corr_matrix.columns)
         ax1.set_title("Correlation Matrix")
-        plt.show()
+        ax1.patch.set_alpha(0.0)
+        fig.patch.set_alpha(0.0)
+        return fig, corr_matrix
 
-    def show_scatter_plot(self):
+    def show_scatter_plot(self, attribute1):
         """
         Plots a scatter plot relationship between three variables with x being attribute1, y is attribute 2, and
         y classifier is color of information.
 
         """
-        for attribute1 in self.x.columns:
-            for attribute2 in self.x.columns:
-                if attribute1 != attribute2:
-                    style.use('ggplot')
+        fig_array = []
+        for attribute2 in self.x.columns:
+            if attribute1 != attribute2:
+                style.use('dark_background')
 
-                    print(plt.style.available)
+                fig, (ax1) = plt.subplots(1, 1, figsize=(10, 9))
+                true_array = self.x.where((self.y == 1))
+                false_array = self.x.where((self.y == 0))
 
-                    fig, (ax1) = plt.subplots(1, 1, figsize=(10, 9))
-                    true_array = self.x.where((self.y == 1))
-                    false_array = self.x.where((self.y == 0))
-
-                    ax1.scatter(true_array[attribute1], self.x[attribute2], color="royalblue", label="Classifier: True")
-                    ax1.scatter(false_array[attribute1], self.x[attribute2], color="tomato", label="Classifier: False")
-                    ax1.set_title("Compare " + attribute1 + " & " + attribute2)
-                    ax1.legend()
-                    ax1.set_xlabel(attribute1)
-                    ax1.set_ylabel(attribute2)
-                    plt.show()
+                ax1.scatter(true_array[attribute1], self.x[attribute2], color="royalblue", label="Classifier: True")
+                ax1.scatter(false_array[attribute1], self.x[attribute2], color="tomato", label="Classifier: False")
+                ax1.set_title("Compare " + attribute1 + " & " + attribute2)
+                ax1.legend()
+                ax1.set_xlabel(attribute1)
+                ax1.set_ylabel(attribute2)
+                ax1.patch.set_alpha(0.0)
+                fig.patch.set_alpha(0.0)
+                ax1.legend(fancybox=True, framealpha=0.2)
+                fig_array.append(fig)
+        return fig_array
 
     def normalize(self, attribute):
         """
