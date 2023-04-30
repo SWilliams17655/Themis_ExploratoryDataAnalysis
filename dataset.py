@@ -6,7 +6,6 @@ import numpy as np
 
 class AIDataset:
     def __init__(self):
-        self.file_location = ""
         self.data_file = pd.DataFrame()
         self.x = pd.DataFrame()
         self.y = pd.DataFrame()
@@ -14,25 +13,21 @@ class AIDataset:
     def load(self, os_loc=None, y_label=None):
         """ Loads a data set for use in the machine learning program to test.
 
-        :param os_loc: [Optional] String representing the file to be loaded. If None, the function
+        :param os_loc: [Required] String representing the file to be loaded. If None, the function
         will request user provide a location via the command prompt. Default = None.
         :param y_label: [Optional] String representing the label for y which will be split into y dataframe. Default = None.
         if it is None then bypasses splitting out the y array and lets user do it manually.
-        :return: DataFrame representing the file loaded.
         """
+        try:
+            self.data_file = pd.read_csv(os_loc)
+        except:
+            raise Exception("File did not load correctly.")
 
-        if os_loc is None:
-            self.data_file = pd.read_csv(self.file_location)
-
-        else:
-            self.file_location = os_loc
-            self.data_file = pd.read_csv(self.file_location)
-
-        if y_label is not None:
+        try:
             self.y = self.data_file[y_label]
             self.x = self.data_file.drop([y_label], axis=1)
-
-        return self.data_file
+        except:
+            raise Exception("Target attribute did not exist.")
 
     def show_histogram(self):
         """
@@ -47,8 +42,9 @@ class AIDataset:
             true_array = self.x.where((self.y == 1))
             false_array = self.x.where((self.y == 0))
             x, bin_label, patch = ax1.hist([true_array[attribute], false_array[attribute]], bins=15, density=False,
-                     stacked=False, histtype='step', rwidth=0.7, align='mid', color=["royalblue", "tomato"],
-                     label=["True", "False"])
+                                           stacked=False, histtype='step', rwidth=0.7, align='mid',
+                                           color=["royalblue", "tomato"],
+                                           label=["True", "False"])
 
             ax1.set_xticks(bin_label)
             ax1.set_title(attribute, fontsize=20)

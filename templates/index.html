@@ -14,36 +14,39 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </head>
 
+<!-- Adds the navigation header to the website-->
 <body class="text-white bg-dark text-center gap-2">
     {% include "header.html" %}
 
-    <!-- Jumbotron -->
-    <div class="bg-image text-center shadow-1-strong text-white d-flex flex-column p-3" style="background-image: url('/static/images/computerBanner.jpg'); height: 200px;">
-        <h1>Themis</h1>
-        <h5><br></h5>
-        <h3>
-            A data analysis tool facilitating exploratory data analysis and find causal relationships in complex data.
-        </h3>
+    <!-- Adds the jumbotron to the website-->
+    <div class="bg-image text-center justify-content-center shadow-1-strong text-white d-flex flex-column p-3" style="background-image: url('/static/images/computerBanner.jpg'); height: 200px;">
+        <h3> Step 1: Load Data </h3>
+        <h4> To begin, select the data set and type in the attribute name of your target variable.</h4>
     </div>
 
     <div class="container p-2 m-t bg-dark col-sm-12 col-md-12 col-lg-12">
         <h3></h3>
     </div>
 
-    <div class="container pt-5 bg-dark col-sm-12 col-md-12 col-lg-12">
-        <h3>To import new data, open an excel file.</h3>
-    </div>
-    <div class="container pt-2 bg-dark col-sm-12 col-md-12 col-lg-12">
-        <form action="{{url_for('get_quality')}}" method="POST">
-            <div class="container justify-content-center mb-3">
-                <input class="form-control" type="file" id="formFile" name="file">
-            </div>
-            <div class="container justify-content-center mb-3">
-                <button type="submit" class="btn btn-primary mb-3">Load</button>
-            </div>
-        </form>
-    </div>
-
+    {%if dataset is none: %}
+        <div class="container pt-2 bg-dark col-sm-12 col-md-12 col-lg-12">
+            <form action="{{url_for('home_page')}}" method="POST">
+                <div class="container pt-5 bg-dark col-sm-12 col-md-12 col-lg-12">
+                    <h3>Data file, but be in same directory at executable under directory Data/your_filename:</h3>
+                </div>
+                <div class="container justify-content-center mb-3">
+                    <input class="form-control" type="file" id="formFile" name="file">
+                    <div class="container pt-5 bg-dark col-sm-12 col-md-12 col-lg-12">
+                    <h3>Text string identifying the target attribute's name in the excel column:</h3>
+                </div>
+                    <textarea class="form-control" id="formFile" name="target_attribute" rows="3"></textarea>
+                </div>
+                <div class="container justify-content-center mb-3">
+                    <button type="submit" class="btn btn-primary mb-3">Load</button>
+                </div>
+            </form>
+        </div>
+    {%endif%}
 
 </body>
 </html>

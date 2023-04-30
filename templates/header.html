@@ -10,18 +10,20 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('get_quality')}}">Analyze Quality</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('get_correlation')}}">Analyze Correlation</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('get_view_data')}}">View Data</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('get_save')}}">Save Data</a>
-                    </li>
+                    {%if dataset is not none: %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('get_quality')}}">Analyze Quality</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('get_correlation')}}">Analyze Correlation</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('get_view_data')}}">View Data</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('get_save')}}">Save Data</a>
+                        </li>
+                    {%endif%}
                 </ul>
             </div>
         </div>

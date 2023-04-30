@@ -3,30 +3,26 @@ import base64
 from flask import Flask, flash, render_template, request
 from io import BytesIO
 
-from matplotlib.figure import Figure
-# from sklearn.metrics import accuracy_score
-import numpy as np
-import pickle
-# import matplotlib.pyplot as plt
-
-from flask import Flask, flash, render_template, request
-
 global train_set, attribute_selected
 
 app = Flask(__name__)
 
-
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def home_page():
-    global train_set
-    global attribute_selected
-
+    global attribute_selected, train_set
     attribute_selected = False
 
-    train_set = AIDataset()
-    train_set.load(os_loc="Data/train.csv", y_label='target')
-    return render_template("index.html", dataset=train_set)
+    if request.method == 'POST':
+        try:
+            train_set = AIDataset()
+            train_set.load(os_loc=f"Data/{request.form.get('file')}", y_label=request.form.get("target_attribute"))
+        except:
+            train_set = None
 
+    if train_set is None:
+        return render_template("index.html", dataset=train_set)
+    else:
+        return render_template("quality.html", dataset=train_set)
 
 @app.route("/quality", methods=["GET", "POST"])
 def get_quality():
@@ -72,6 +68,9 @@ def get_correlation():
 
 @app.route("/view_data", methods=["GET", "POST"])
 def get_view_data():
+
+    global train_set
+    print(train_set.x.iloc[0])
     return render_template("view_data.html", dataset=train_set)
 
 
@@ -81,4 +80,6 @@ def get_save():
 
 
 if __name__ == "__main__":  # is the same thing as calling the run function
+    global train_set
+    train_set = None
     app.run(host="0.0.0.0")
