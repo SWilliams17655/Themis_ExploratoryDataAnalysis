@@ -11,11 +11,11 @@ class AIDataset:
         self.y = pd.DataFrame()
 
     def load(self, os_loc=None, y_label=None):
-        """ Loads a data set for use in the machine learning program to test.
-
+        """
+        Loads a data set for use in the machine learning program to test.
         :param os_loc: [Required] String representing the file to be loaded. If None, the function
         will request user provide a location via the command prompt. Default = None.
-        :param y_label: [Optional] String representing the label for y which will be split into y dataframe. Default = None.
+        :param y_label: [Optional] String representing the label for y which will be split. Default = None.
         if it is None then bypasses splitting out the y array and lets user do it manually.
         """
         try:
@@ -31,8 +31,9 @@ class AIDataset:
 
     def show_histogram(self):
         """
-        Plots multiple scatter plots showing relationship between attributes in
-        attributes array. If mask is a value other than none, graph only shows correlating data for that value of Y.
+        Plots multiple scatter plots showing relationship between attributes in attributes array. If mask is a
+        value other than none, graph only shows correlating data for that value of Y.
+        :return: An array of matplot figures with associated histograms for all variables.
         """
         style.use('dark_background')
         fig_array = []
@@ -57,14 +58,14 @@ class AIDataset:
 
     def show_correlation_matrix(self):
         """
-        Plots a correlation matrix
+        Plots a correlation matrix using y as the classifier.
+        :return: A matplotlib figure representing the correlation matrix for the data.
+        :return: A dataframe representing the correlation matrix for the data.
         """
         style.use('dark_background')
         new_val = self.x.copy()
         new_val["Classifier"] = self.y
         corr_matrix = new_val.corr()
-        print(corr_matrix["Classifier"].sort_values(ascending=False))
-        print("\n")
 
         fig, (ax1) = plt.subplots(1, 1, figsize=(15, 9))
         color_axes = ax1.matshow(corr_matrix, cmap='Reds')
@@ -75,25 +76,26 @@ class AIDataset:
         fig.patch.set_alpha(0.0)
         return fig, corr_matrix
 
-    def show_scatter_plot(self, attribute1):
+    def show_scatter_plot(self, attribute):
         """
-        Plots a scatter plot relationship between three variables with x being attribute1, y is attribute 2, and
+        Plots a scatter plot relationship between three variables with x being attribute, y is attribute2, and
         y classifier is color of information.
-
+        :param attribute: [Required] The first attribute to be plotted on the x-axis.
+        :return: An array of matplot figures with associated scatterplots for all variables.
         """
         fig_array = []
         for attribute2 in self.x.columns:
-            if attribute1 != attribute2:
+            if attribute != attribute2:
                 style.use('dark_background')
 
                 fig, (ax1) = plt.subplots(1, 1, figsize=(20, 9))
                 true_array = self.x.where((self.y == 1))
                 false_array = self.x.where((self.y == 0))
 
-                ax1.scatter(true_array[attribute1], self.x[attribute2], color="royalblue", label="Classifier: True")
-                ax1.scatter(false_array[attribute1], self.x[attribute2], color="tomato", label="Classifier: False")
-                ax1.set_title(attribute1 + " & " + attribute2, fontsize=20)
-                ax1.set_xlabel(attribute1, fontsize=12)
+                ax1.scatter(true_array[attribute], self.x[attribute2], color="royalblue", label="Classifier: True")
+                ax1.scatter(false_array[attribute], self.x[attribute2], color="tomato", label="Classifier: False")
+                ax1.set_title(attribute + " & " + attribute2, fontsize=20)
+                ax1.set_xlabel(attribute, fontsize=12)
                 ax1.set_ylabel(attribute2, fontsize=12)
                 ax1.patch.set_alpha(0.0)
                 fig.patch.set_alpha(0.0)
@@ -104,19 +106,16 @@ class AIDataset:
 
     def normalize(self, attribute):
         """
-        Displays an image representing the character following processing.
-
-        :param attribute: Label to be normalized.
+        Normalizes data using a max and min value.
+        :param attribute: Label to be normalized then adds it as an additional column to the table.
         """
         min_value = self.x[attribute].min()
         max_value = self.x[attribute].max()
-        print(f"Normalizing with min value of {min_value} and max value of {max_value}")
         self.x[str(attribute + "_norm")] = self.x[attribute].apply(lambda x: (x - min_value) / max_value)
 
     def remove_nulls(self, attribute):
         """
         Removes null values of an attribute in a data_set by replacing with median.
-
         :param attribute: Label of the attribute to be adjusted.
         """
 
@@ -126,20 +125,26 @@ class AIDataset:
     def remove_zeros(self, attribute):
         """
         Removes zero values in datasets missing data
-
         :param attribute: Label of the attribute to be adjusted.
         """
 
         median = self.x[attribute].median()
-
         self.x[attribute] = self.x[attribute].replace(0, median)
 
     def map_text_to_category(self, attribute):
         """
         Removes zero values in datasets missing data
-
         :param attribute: Label of the attribute to be adjusted.
         """
         category = self.x[attribute]
         cat_encoded, categories = category.factorize()
         self.x[str(attribute + "_cat")] = cat_encoded
+
+    def save(self, filename):
+        """
+        Saves data to a .csv file for later use. Target attribute is labeled in a Classifier column.
+        :param filename: [Required] String representing the file to be saved.
+        """
+        new_val = self.x.copy()
+        new_val["Classifier"] = self.y
+        new_val.to_csv(filename)

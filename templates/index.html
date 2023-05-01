@@ -46,6 +46,8 @@
                 </div>
             </form>
         </div>
+    {%else%}
+        <meta http-equiv = "refresh" content = "0; url = {{url_for('get_quality')}}" />
     {%endif%}
 
 </body>
